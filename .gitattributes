@@ -1,0 +1,5 @@
+* text=auto
+*.gd text eol=lf
+*.txt text eol=lf
+addons/godot-sqlite/bin/* binary
+godot-sqlite/bin/* binary
