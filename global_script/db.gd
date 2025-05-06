@@ -47,12 +47,14 @@ func create_tables():
 	# Таблица уровней
 	db.query("""
 	CREATE TABLE IF NOT EXISTS Levels (
-		level_id INTEGER PRIMARY KEY,
 		player_id INTEGER,
+		level_id INTEGER,
 		is_unlocked BOOLEAN DEFAULT FALSE,
 		best_time REAL DEFAULT 0,
+		PRIMARY KEY (player_id, level_id),
 		FOREIGN KEY(player_id) REFERENCES Players(player_id)
-	);
+);
+
 	""")
 	
 	# Таблица сохранений
