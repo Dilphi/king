@@ -38,5 +38,6 @@ text = "Начать игру"
 layout_mode = 2
 text = "Выйти на рабочий стол"
 
+[connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="VBoxContainer/New_play" to="." method="_on_new_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

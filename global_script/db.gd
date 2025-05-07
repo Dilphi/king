@@ -64,9 +64,12 @@ func create_tables():
 		player_id INTEGER,
 		level_id INTEGER,
 		coins INTEGER,
+		pos_x REAL DEFAULT 0,
+		pos_y REAL DEFAULT 0,
 		timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(player_id) REFERENCES Players(player_id)
 	);
+
 	""")
 
 # Регистрация нового игрока
@@ -174,18 +177,18 @@ func is_level_unlocked(level_id: int) -> bool:
 	return result[0]["is_unlocked"] if result.size() > 0 else false
 
 # Функции сохранения/загрузки
-func save_game(level_id: int):
-	var coins = get_coins()
+func save_game(level_id: int, coins: int):
 	db.query("""
 	INSERT INTO Saves (player_id, level_id, coins)
 	VALUES (%d, %d, %d);
 	""" % [current_player_id, level_id, coins])
 
+# Обновлённый метод загрузки (без позиции)
 func load_game() -> Dictionary:
 	var result = db.select_rows(
 		"Saves", 
-		"player_id = %d" % current_player_id, 
-		["level_id", "coins"],
+		"player_id = %d ORDER BY save_id DESC LIMIT 1" % current_player_id, 
+		["level_id", "coins"]
 	)
 	
 	if result.size() > 0:
