@@ -101,12 +101,13 @@ func login(username: String, password: String) -> bool:
 	return false
 
 # Функции для работы с монетами
-func add_coins(amount: int):
+func add_coin():
 	db.query("""
 	UPDATE Coins 
-	SET amount = amount + %d 
+	SET amount = amount + 1 
 	WHERE player_id = %d;
-	""" % [amount, current_player_id])
+	""" % current_player_id)
+
 
 func get_coins() -> int:
 	var result = db.select_rows("Coins", 
@@ -122,13 +123,13 @@ func add_fall_death():
 	WHERE player_id = %d;
 	""" % [current_player_id])
 
-func add_mob_death():
+func add_coins(amount: int):
 	db.query("""
-	UPDATE Deaths 
-	SET mob_deaths = mob_deaths + 1 
+	UPDATE Coins 
+	SET amount = amount + %d 
 	WHERE player_id = %d;
-	""" % [current_player_id])
-
+	""" % [amount, current_player_id])
+	
 func get_death_stats() -> Dictionary:
 	var result = db.select_rows("Deaths", 
 		"player_id = %d" % current_player_id, 
@@ -140,6 +141,41 @@ func get_death_stats() -> Dictionary:
 			"mobs": result[0]["mob_deaths"]
 		}
 	return {"falls": 0, "mobs": 0}
+
+func get_all_coins_info() -> Array:
+	var query = """
+	SELECT Players.username, Coins.amount 
+	FROM Coins 
+	JOIN Players ON Coins.player_id = Players.player_id;
+	"""
+	if db.query(query):
+		return db.query_result
+	return []
+
+func get_all_death_info() -> Array:
+	var query = """
+	SELECT Players.username, Deaths.fall_deaths, Deaths.mob_deaths 
+	FROM Deaths 
+	JOIN Players ON Deaths.player_id = Players.player_id;
+	"""
+	if db.query(query):
+		return db.query_result
+	return []
+
+func get_all_best_times() -> Array:
+	var query = """
+	SELECT Players.username, Levels.level_id, Levels.best_time 
+	FROM Levels 
+	JOIN Players ON Levels.player_id = Players.player_id;
+	"""
+	if db.query(query):
+		return db.query_result
+	return []
+
+func get_all_usernames() -> Array:
+	if db.query("SELECT username FROM Players;"):
+		return db.query_result
+	return []
 
 # Функции для уровней
 func save_level_time(level_id: int, time: float):
@@ -197,3 +233,10 @@ func load_game() -> Dictionary:
 			"coins": result[0]["coins"]
 		}
 	return {"level": 1, "coins": 0}
+
+func add_mob_death():
+	db.query("""
+	UPDATE Deaths 
+	SET mob_deaths = mob_deaths + 1 
+	WHERE player_id = %d;
+	""" % [current_player_id])

@@ -41,7 +41,7 @@ text = "Зарегестрироваться"
 [node name="Aut" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Авториизоваться"
+text = "Авторизоваться"
 
 [node name="Message" type="Label" parent="VBoxContainer"]
 layout_mode = 2

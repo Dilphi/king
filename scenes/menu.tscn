@@ -11,6 +11,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yqeox")
 
+[node name="Back" type="Button" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 2.0
+offset_right = 202.0
+offset_bottom = 31.0
+text = "Назад"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -34,10 +42,30 @@ text = "Продолжить"
 layout_mode = 2
 text = "Начать игру"
 
+[node name="Statistic" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Статистика"
+
 [node name="Quit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Выйти на рабочий стол"
 
+[node name="Stat" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 476.0
+offset_top = 242.0
+offset_right = 676.0
+offset_bottom = 377.0
+
+[node name="Name" type="Label" parent="Stat"]
+layout_mode = 2
+
+[node name="InfoLabel" type="Label" parent="Stat"]
+layout_mode = 2
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="VBoxContainer/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="VBoxContainer/New_play" to="." method="_on_new_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Statistic" to="." method="_on_statistic_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
